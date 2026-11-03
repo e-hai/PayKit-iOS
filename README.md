@@ -1,4 +1,4 @@
-# PayKit iOS
+# PayKit-iOS
 
 轻量级 iOS StoreKit 2 支付 SDK（Swift Package Manager），对外提供简洁、**纯本地无后端**、现代 Swift 并发（`async/await`）API。
 
@@ -43,7 +43,7 @@ DeviceCache   CustomerInfoHelper   StoreKit2Wrapper
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/e-hai/PayKit.git", branch: "ios")
+    .package(url: "https://github.com/e-hai/PayKit-iOS.git", branch: "main")
 ]
 ```
 

@@ -1,4 +1,4 @@
-# PayKit iOS – AGENTS.md
+# PayKit-iOS – AGENTS.md
 
 给 AI Agent（Cursor / Codex / Copilot 等）用的项目说明：快速理解结构、约定与安全改动边界。
 
