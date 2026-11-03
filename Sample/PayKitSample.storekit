@@ -7,7 +7,7 @@
     {
       "displayPrice" : "0.99",
       "familyShareable" : false,
-      "internalID" : "C1001",
+      "internalID" : "1001",
       "localizations" : [
         {
           "description" : "100 游戏金币",
@@ -27,7 +27,7 @@
     {
       "displayPrice" : "49.99",
       "familyShareable" : true,
-      "internalID" : "C1002",
+      "internalID" : "1002",
       "localizations" : [
         {
           "description" : "终身永久高级版权益",
@@ -52,7 +52,7 @@
   },
   "subscriptionGroups" : [
     {
-      "id" : "SG_VIP",
+      "id" : "21474836",
       "localizations" : [
         {
           "description" : "VIP 会员服务",
@@ -72,9 +72,9 @@
           "displayPrice" : "4.99",
           "familyShareable" : false,
           "groupNumber" : 2,
-          "internalID" : "S2001",
+          "internalID" : "2001",
           "introductoryOffer" : {
-            "internalID" : "INTRO_PLUS_M",
+            "internalID" : "20011",
             "numberOfPeriods" : 1,
             "paymentMode" : "freeTrial",
             "subscriptionPeriod" : "P1W"
@@ -89,7 +89,7 @@
           "productID" : "plus_monthly",
           "recurringSubscriptionPeriod" : "P1M",
           "referenceName" : "Plus Monthly",
-          "subscriptionGroupID" : "SG_VIP",
+          "subscriptionGroupID" : "21474836",
           "type" : "RecurringSubscription"
         },
         {
@@ -102,7 +102,7 @@
           "displayPrice" : "49.99",
           "familyShareable" : false,
           "groupNumber" : 2,
-          "internalID" : "S2002",
+          "internalID" : "2002",
           "introductoryOffer" : null,
           "localizations" : [
             {
@@ -114,7 +114,7 @@
           "productID" : "plus_yearly",
           "recurringSubscriptionPeriod" : "P1Y",
           "referenceName" : "Plus Yearly",
-          "subscriptionGroupID" : "SG_VIP",
+          "subscriptionGroupID" : "21474836",
           "type" : "RecurringSubscription"
         },
         {
@@ -127,9 +127,9 @@
           "displayPrice" : "9.99",
           "familyShareable" : false,
           "groupNumber" : 1,
-          "internalID" : "S3001",
+          "internalID" : "3001",
           "introductoryOffer" : {
-            "internalID" : "INTRO_PRO_M",
+            "internalID" : "30011",
             "numberOfPeriods" : 1,
             "paymentMode" : "freeTrial",
             "subscriptionPeriod" : "P1W"
@@ -144,7 +144,7 @@
           "productID" : "pro_monthly",
           "recurringSubscriptionPeriod" : "P1M",
           "referenceName" : "Pro Monthly",
-          "subscriptionGroupID" : "SG_VIP",
+          "subscriptionGroupID" : "21474836",
           "type" : "RecurringSubscription"
         },
         {
@@ -157,7 +157,7 @@
           "displayPrice" : "99.99",
           "familyShareable" : false,
           "groupNumber" : 1,
-          "internalID" : "S3002",
+          "internalID" : "3002",
           "introductoryOffer" : null,
           "localizations" : [
             {
@@ -169,7 +169,7 @@
           "productID" : "pro_yearly",
           "recurringSubscriptionPeriod" : "P1Y",
           "referenceName" : "Pro Yearly",
-          "subscriptionGroupID" : "SG_VIP",
+          "subscriptionGroupID" : "21474836",
           "type" : "RecurringSubscription"
         }
       ]
