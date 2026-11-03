@@ -1,0 +1,182 @@
+{
+  "identifier" : "E2B5A967",
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+    {
+      "displayPrice" : "0.99",
+      "familyShareable" : false,
+      "internalID" : "C1001",
+      "localizations" : [
+        {
+          "description" : "100 游戏金币",
+          "displayName" : "100 金币",
+          "locale" : "zh_CN"
+        },
+        {
+          "description" : "100 Game Coins",
+          "displayName" : "100 Coins",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "coins_100",
+      "referenceName" : "100 Coins",
+      "type" : "Consumable"
+    },
+    {
+      "displayPrice" : "49.99",
+      "familyShareable" : true,
+      "internalID" : "C1002",
+      "localizations" : [
+        {
+          "description" : "终身永久高级版权益",
+          "displayName" : "终身会员",
+          "locale" : "zh_CN"
+        },
+        {
+          "description" : "Lifetime full feature unlock",
+          "displayName" : "Lifetime Pass",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "lifetime_pass",
+      "referenceName" : "Lifetime Pass",
+      "type" : "NonConsumable"
+    }
+  ],
+  "settings" : {
+    "_failTransactionsEnabled" : false,
+    "_locale" : "zh_CN",
+    "_storefront" : "CHN"
+  },
+  "subscriptionGroups" : [
+    {
+      "id" : "SG_VIP",
+      "localizations" : [
+        {
+          "description" : "VIP 会员服务",
+          "displayName" : "VIP 会员",
+          "locale" : "zh_CN"
+        }
+      ],
+      "name" : "VIP Subscriptions",
+      "subscriptions" : [
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "4.99",
+          "familyShareable" : false,
+          "groupNumber" : 2,
+          "internalID" : "S2001",
+          "introductoryOffer" : {
+            "internalID" : "INTRO_PLUS_M",
+            "numberOfPeriods" : 1,
+            "paymentMode" : "freeTrial",
+            "subscriptionPeriod" : "P1W"
+          },
+          "localizations" : [
+            {
+              "description" : "Plus 会员月订阅（首周免费试用）",
+              "displayName" : "Plus 月度会员",
+              "locale" : "zh_CN"
+            }
+          ],
+          "productID" : "plus_monthly",
+          "recurringSubscriptionPeriod" : "P1M",
+          "referenceName" : "Plus Monthly",
+          "subscriptionGroupID" : "SG_VIP",
+          "type" : "RecurringSubscription"
+        },
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "49.99",
+          "familyShareable" : false,
+          "groupNumber" : 2,
+          "internalID" : "S2002",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "Plus 会员年订阅",
+              "displayName" : "Plus 年度会员",
+              "locale" : "zh_CN"
+            }
+          ],
+          "productID" : "plus_yearly",
+          "recurringSubscriptionPeriod" : "P1Y",
+          "referenceName" : "Plus Yearly",
+          "subscriptionGroupID" : "SG_VIP",
+          "type" : "RecurringSubscription"
+        },
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "9.99",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "S3001",
+          "introductoryOffer" : {
+            "internalID" : "INTRO_PRO_M",
+            "numberOfPeriods" : 1,
+            "paymentMode" : "freeTrial",
+            "subscriptionPeriod" : "P1W"
+          },
+          "localizations" : [
+            {
+              "description" : "Pro 顶级会员月订阅（首周免费试用）",
+              "displayName" : "Pro 月度会员",
+              "locale" : "zh_CN"
+            }
+          ],
+          "productID" : "pro_monthly",
+          "recurringSubscriptionPeriod" : "P1M",
+          "referenceName" : "Pro Monthly",
+          "subscriptionGroupID" : "SG_VIP",
+          "type" : "RecurringSubscription"
+        },
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "99.99",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "S3002",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "Pro 顶级会员年订阅",
+              "displayName" : "Pro 年度会员",
+              "locale" : "zh_CN"
+            }
+          ],
+          "productID" : "pro_yearly",
+          "recurringSubscriptionPeriod" : "P1Y",
+          "referenceName" : "Pro Yearly",
+          "subscriptionGroupID" : "SG_VIP",
+          "type" : "RecurringSubscription"
+        }
+      ]
+    }
+  ],
+  "version" : {
+    "major" : 3,
+    "minor" : 0
+  }
+}
