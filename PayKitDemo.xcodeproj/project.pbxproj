@@ -17,12 +17,12 @@
 
 /* Begin PBXFileReference section */
 		0E18D50827F07C2707D787E8 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		1602413E5D330E6941279E2C /* PayKitDemo.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = PayKitDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1602413E5D330E6941279E2C /* PayKitDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PayKitDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		173811B111AACFF542E41EC4 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		1801ED16A865AC416665D57D /* PayKit-iOS */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "PayKit-iOS"; path = .; sourceTree = SOURCE_ROOT; };
 		2B632EDF5DE268786F73D3E5 /* ContentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewModel.swift; sourceTree = "<group>"; };
 		93A8B76971BA10165EB60C45 /* PayKitSampleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayKitSampleApp.swift; sourceTree = "<group>"; };
-		A10D101F569064FCECE512BC /* PayKitSample.storekit */ = {isa = PBXFileReference; path = PayKitSample.storekit; sourceTree = "<group>"; };
+		A10D101F569064FCECE512BC /* PayKitSample.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = PayKitSample.storekit; sourceTree = "<group>"; };
 		F0E939F6A5F2B1D43DED333B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -107,8 +107,6 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
 				LastUpgradeCheck = 1430;
-				TargetAttributes = {
-				};
 			};
 			buildConfigurationList = 51BD75E175E3FDBF80D91540 /* Build configuration list for PBXProject "PayKitDemo" */;
 			developmentRegion = en;
@@ -282,6 +280,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = WS74WR4265;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Sample/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
@@ -301,6 +300,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = WS74WR4265;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Sample/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;

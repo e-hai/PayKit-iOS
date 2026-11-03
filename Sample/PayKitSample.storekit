@@ -46,9 +46,7 @@
     }
   ],
   "settings" : {
-    "_failTransactionsEnabled" : false,
-    "_locale" : "zh_CN",
-    "_storefront" : "CHN"
+
   },
   "subscriptionGroups" : [
     {
@@ -58,6 +56,11 @@
           "description" : "VIP 会员服务",
           "displayName" : "VIP 会员",
           "locale" : "zh_CN"
+        },
+        {
+          "description" : "VIP Subscriptions",
+          "displayName" : "VIP",
+          "locale" : "en_US"
         }
       ],
       "name" : "VIP Subscriptions",
@@ -73,17 +76,16 @@
           "familyShareable" : false,
           "groupNumber" : 2,
           "internalID" : "2001",
-          "introductoryOffer" : {
-            "internalID" : "20011",
-            "numberOfPeriods" : 1,
-            "paymentMode" : "freeTrial",
-            "subscriptionPeriod" : "P1W"
-          },
           "localizations" : [
             {
-              "description" : "Plus 会员月订阅（首周免费试用）",
+              "description" : "Plus 会员月订阅",
               "displayName" : "Plus 月度会员",
               "locale" : "zh_CN"
+            },
+            {
+              "description" : "Plus Monthly Subscription",
+              "displayName" : "Plus Monthly",
+              "locale" : "en_US"
             }
           ],
           "productID" : "plus_monthly",
@@ -103,12 +105,16 @@
           "familyShareable" : false,
           "groupNumber" : 2,
           "internalID" : "2002",
-          "introductoryOffer" : null,
           "localizations" : [
             {
               "description" : "Plus 会员年订阅",
               "displayName" : "Plus 年度会员",
               "locale" : "zh_CN"
+            },
+            {
+              "description" : "Plus Yearly Subscription",
+              "displayName" : "Plus Yearly",
+              "locale" : "en_US"
             }
           ],
           "productID" : "plus_yearly",
@@ -128,17 +134,16 @@
           "familyShareable" : false,
           "groupNumber" : 1,
           "internalID" : "3001",
-          "introductoryOffer" : {
-            "internalID" : "30011",
-            "numberOfPeriods" : 1,
-            "paymentMode" : "freeTrial",
-            "subscriptionPeriod" : "P1W"
-          },
           "localizations" : [
             {
-              "description" : "Pro 顶级会员月订阅（首周免费试用）",
+              "description" : "Pro 顶级会员月订阅",
               "displayName" : "Pro 月度会员",
               "locale" : "zh_CN"
+            },
+            {
+              "description" : "Pro Monthly Subscription",
+              "displayName" : "Pro Monthly",
+              "locale" : "en_US"
             }
           ],
           "productID" : "pro_monthly",
@@ -158,12 +163,16 @@
           "familyShareable" : false,
           "groupNumber" : 1,
           "internalID" : "3002",
-          "introductoryOffer" : null,
           "localizations" : [
             {
               "description" : "Pro 顶级会员年订阅",
               "displayName" : "Pro 年度会员",
               "locale" : "zh_CN"
+            },
+            {
+              "description" : "Pro Yearly Subscription",
+              "displayName" : "Pro Yearly",
+              "locale" : "en_US"
             }
           ],
           "productID" : "pro_yearly",
