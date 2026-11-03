@@ -1,0 +1,32 @@
+name: PayKitDemo
+options:
+  bundleIdPrefix: com.kit.pay
+  deploymentTarget:
+    iOS: "15.0"
+packages:
+  PayKit:
+    path: .
+targets:
+  PayKitDemo:
+    type: application
+    platform: iOS
+    deploymentTarget: "15.0"
+    sources:
+      - path: Sample
+    dependencies:
+      - package: PayKit
+        product: PayKit
+    settings:
+      base:
+        INFOPLIST_FILE: Sample/Info.plist
+        PRODUCT_BUNDLE_IDENTIFIER: com.kit.pay.demo
+        TARGETED_DEVICE_FAMILY: "1,2"
+        ENABLE_PREVIEWS: YES
+        SWIFT_VERSION: "5.0"
+schemes:
+  PayKitDemo:
+    build:
+      targets:
+        PayKitDemo: all
+    run:
+      config: Debug
