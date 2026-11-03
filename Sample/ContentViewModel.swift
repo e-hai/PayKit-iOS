@@ -62,8 +62,10 @@ public final class ContentViewModel: ObservableObject {
         switch result {
         case .success(let prods):
             self.products = prods
+            LogUtil.i(LogUtil.tagSample, "loadProducts completed, loaded count=\(prods.count)")
         case .failure(let error):
             self.errorMessage = "加载商品失败: \(error.message)"
+            LogUtil.e(LogUtil.tagSample, "loadProducts failed: \(error.message)")
         }
     }
 

@@ -51,6 +51,10 @@ public final class StoreKit2Wrapper: BillingAbstract, @unchecked Sendable {
         LogUtil.d(LogUtil.tagBilling, "queryProductDetails ids=\(productIds)")
         do {
             let products = try await Product.products(for: productIds)
+            LogUtil.d(LogUtil.tagBilling, "queryProductDetails returned count=\(products.count)")
+            if products.isEmpty {
+                LogUtil.w(LogUtil.tagBilling, "queryProductDetails returned 0 products. If testing in Xcode/Simulator, please ensure Scheme -> Run -> Options -> StoreKit Configuration is set to PayKitSample.storekit")
+            }
             return products.map { product in
                 let isSubs = (product.type == .autoRenewable || product.type == .nonRenewable)
                 let type: ProductType = isSubs ? .subs : .inapp

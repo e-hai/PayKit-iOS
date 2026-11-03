@@ -105,43 +105,87 @@ public struct ContentView: View {
                 }
             }
 
-            ForEach(filteredProducts) { product in
-                HStack {
-                    VStack(alignment: .leading, spacing: 4) {
-                        HStack {
-                            Text(product.title)
-                                .font(.headline)
-                            if product.hasFreeTrial {
-                                Text("免费试用")
-                                    .font(.caption2)
-                                    .fontWeight(.bold)
-                                    .foregroundColor(.white)
-                                    .padding(.horizontal, 6)
-                                    .padding(.vertical, 2)
-                                    .background(Color.orange)
-                                    .cornerRadius(4)
-                            }
+            if filteredProducts.isEmpty {
+                VStack(spacing: 10) {
+                    Image(systemName: "cart.badge.questionmark")
+                        .font(.system(size: 32))
+                        .foregroundColor(.secondary)
+                    Text("暂未查询到该档位商品")
+                        .font(.headline)
+                        .foregroundColor(.secondary)
+
+                    if viewModel.products.isEmpty && !viewModel.isLoading {
+                        VStack(alignment: .leading, spacing: 6) {
+                            Text("💡 本地测试提示（未关联 StoreKit 仿真文件）：")
+                                .font(.caption)
+                                .fontWeight(.bold)
+                                .foregroundColor(.orange)
+                            Text("1. 在 Xcode 菜单栏选择 Product -> Scheme -> Edit Scheme... (⌘ <)")
+                                .font(.caption2)
+                            Text("2. 左侧点击 Run，右侧切到 Options 选项卡")
+                                .font(.caption2)
+                            Text("3. 找到 StoreKit Configuration，下拉选中 PayKitSample.storekit")
+                                .font(.caption2)
                         }
-                        Text(product.description)
-                            .font(.caption)
-                            .foregroundColor(.secondary)
-                    }
-                    Spacer()
-                    Button(action: {
-                        viewModel.purchase(product: product)
-                    }) {
-                        Text(product.price)
-                            .fontWeight(.semibold)
-                            .padding(.horizontal, 14)
-                            .padding(.vertical, 8)
-                            .background(Color.blue)
-                            .foregroundColor(.white)
-                            .cornerRadius(8)
+                        .padding()
+                        .background(Color.orange.opacity(0.12))
+                        .cornerRadius(8)
+
+                        Button(action: {
+                            Task { await viewModel.loadProducts() }
+                        }) {
+                            Label("重新查询商品", systemImage: "arrow.clockwise")
+                                .font(.subheadline)
+                                .padding(.horizontal, 16)
+                                .padding(.vertical, 8)
+                        }
+                        .buttonStyle(.borderedProminent)
+                        .padding(.top, 4)
                     }
                 }
                 .padding()
+                .frame(maxWidth: .infinity)
                 .background(Color(UIColor.secondarySystemBackground))
                 .cornerRadius(12)
+            } else {
+                ForEach(filteredProducts) { product in
+                    HStack {
+                        VStack(alignment: .leading, spacing: 4) {
+                            HStack {
+                                Text(product.title)
+                                    .font(.headline)
+                                if product.hasFreeTrial {
+                                    Text("免费试用")
+                                        .font(.caption2)
+                                        .fontWeight(.bold)
+                                        .foregroundColor(.white)
+                                        .padding(.horizontal, 6)
+                                        .padding(.vertical, 2)
+                                        .background(Color.orange)
+                                        .cornerRadius(4)
+                                }
+                            }
+                            Text(product.description)
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+                        }
+                        Spacer()
+                        Button(action: {
+                            viewModel.purchase(product: product)
+                        }) {
+                            Text(product.price)
+                                .fontWeight(.semibold)
+                                .padding(.horizontal, 14)
+                                .padding(.vertical, 8)
+                                .background(Color.blue)
+                                .foregroundColor(.white)
+                                .cornerRadius(8)
+                        }
+                    }
+                    .padding()
+                    .background(Color(UIColor.secondarySystemBackground))
+                    .cornerRadius(12)
+                }
             }
         }
     }
@@ -155,31 +199,41 @@ public struct ContentView: View {
                 prod.productId == Constants.inappCoins100 || prod.productId == Constants.inappLifetime
             }
 
-            ForEach(inappProducts) { product in
-                HStack {
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text(product.title)
-                            .font(.headline)
-                        Text(product.description)
-                            .font(.caption)
-                            .foregroundColor(.secondary)
+            if inappProducts.isEmpty {
+                Text("暂无内购商品")
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+                    .padding()
+                    .frame(maxWidth: .infinity)
+                    .background(Color(UIColor.secondarySystemBackground))
+                    .cornerRadius(12)
+            } else {
+                ForEach(inappProducts) { product in
+                    HStack {
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text(product.title)
+                                .font(.headline)
+                            Text(product.description)
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+                        }
+                        Spacer()
+                        Button(action: {
+                            viewModel.purchase(product: product)
+                        }) {
+                            Text(product.price)
+                                .fontWeight(.semibold)
+                                .padding(.horizontal, 14)
+                                .padding(.vertical, 8)
+                                .background(Color.green)
+                                .foregroundColor(.white)
+                                .cornerRadius(8)
+                        }
                     }
-                    Spacer()
-                    Button(action: {
-                        viewModel.purchase(product: product)
-                    }) {
-                        Text(product.price)
-                            .fontWeight(.semibold)
-                            .padding(.horizontal, 14)
-                            .padding(.vertical, 8)
-                            .background(Color.green)
-                            .foregroundColor(.white)
-                            .cornerRadius(8)
-                    }
+                    .padding()
+                    .background(Color(UIColor.secondarySystemBackground))
+                    .cornerRadius(12)
                 }
-                .padding()
-                .background(Color(UIColor.secondarySystemBackground))
-                .cornerRadius(12)
             }
         }
     }
