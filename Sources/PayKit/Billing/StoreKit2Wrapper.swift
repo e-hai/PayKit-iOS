@@ -50,7 +50,23 @@ public final class StoreKit2Wrapper: BillingAbstract, @unchecked Sendable {
 
         LogUtil.d(LogUtil.tagBilling, "queryProductDetails ids=\(productIds)")
         do {
-            let products = try await Product.products(for: productIds)
+            // 添加 6 秒超时保护，防止模拟器未注入 StoreKit 配置时无限挂起
+            let products: [Product] = try await withThrowingTaskGroup(of: [Product].self) { group in
+                group.addTask {
+                    try await Product.products(for: productIds)
+                }
+                group.addTask {
+                    try await Task.sleep(nanoseconds: 6_000_000_000)
+                    throw PayKitError(
+                        code: .networkError,
+                        message: "StoreKit 2 查询超时。模拟器本地测试请确保在 Scheme -> Run -> Options 中勾选了 PayKitSample.storekit。"
+                    )
+                }
+                guard let first = try await group.next() else { return [] }
+                group.cancelAll()
+                return first
+            }
+
             LogUtil.d(LogUtil.tagBilling, "queryProductDetails returned count=\(products.count)")
             if products.isEmpty {
                 LogUtil.w(LogUtil.tagBilling, "queryProductDetails returned 0 products. If testing in Xcode/Simulator, please ensure Scheme -> Run -> Options -> StoreKit Configuration is set to PayKitSample.storekit")
