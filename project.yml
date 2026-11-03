@@ -30,4 +30,3 @@ schemes:
         PayKitDemo: all
     run:
       config: Debug
-      storeKitConfiguration: Sample/PayKitSample.storekit
