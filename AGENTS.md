@@ -58,6 +58,18 @@ PayKit-iOS/
 └── AGENTS.md                         # 本文件
 ```
 
+## Release & Integration
+
+- **Tag**: `1.0.0` / `v1.0.0`
+- **SPM Dependency**:
+  ```swift
+  .package(url: "https://github.com/e-hai/PayKit-iOS.git", from: "1.0.0")
+  ```
+- **Target Dependency**:
+  ```swift
+  .product(name: "PayKit", package: "PayKit")
+  ```
+
 ## Build Toolchain
 
 | Tool | Version |
