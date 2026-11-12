@@ -53,7 +53,7 @@ flowchart LR
   ```
 - **iOS**：通过 SPM 引入：
   ```swift
-  .package(url: "https://github.com/e-hai/PayKit-iOS.git", from: "1.1.0")
+  .package(url: "https://github.com/e-hai/PayKit-iOS.git", from: "1.1.1")
   ```
 
 ### 2. 初始化配置（`PayKit.initialize`）

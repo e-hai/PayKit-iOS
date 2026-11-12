@@ -1,6 +1,6 @@
 # PayKit-iOS
 
-[![Release](https://img.shields.io/badge/Release-1.1.0-blue.svg)](https://github.com/e-hai/PayKit-iOS/releases/tag/1.1.0)
+[![Release](https://img.shields.io/badge/Release-1.1.1-blue.svg)](https://github.com/e-hai/PayKit-iOS/releases/tag/1.1.1)
 [![SPM](https://img.shields.io/badge/SPM-compatible-orange.svg)](https://swift.org/package-manager/)
 [![Platform](https://img.shields.io/badge/Platform-iOS%2015%2B%20%7C%20macOS%2012%2B%20%7C%20visionOS%201%2B-lightgrey.svg)](https://developer.apple.com/documentation/storekit)
 [![Swift](https://img.shields.io/badge/Swift-5.9%2B%20%7C%206.0-red.svg)](https://swift.org)
@@ -117,7 +117,7 @@ sequenceDiagram
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/e-hai/PayKit-iOS.git", from: "1.1.0")
+    .package(url: "https://github.com/e-hai/PayKit-iOS.git", from: "1.1.1")
 ],
 targets: [
     .target(

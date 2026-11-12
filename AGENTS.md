@@ -60,10 +60,10 @@ PayKit-iOS/
 
 ## Release & Integration
 
-- **Tag**: `1.1.0`
+- **Tag**: `1.1.1`
 - **SPM Dependency**:
   ```swift
-  .package(url: "https://github.com/e-hai/PayKit-iOS.git", from: "1.1.0")
+  .package(url: "https://github.com/e-hai/PayKit-iOS.git", from: "1.1.1")
   ```
 - **Target Dependency**:
   ```swift
