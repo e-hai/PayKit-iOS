@@ -18,6 +18,12 @@ public final class PayKit: @unchecked Sendable {
         return inst
     }
 
+    /// 注册外部日志拦截器（接管模式）。可在 `initialize` 之前调用以捕获初始化日志。
+    /// 传入 nil 恢复默认控制台 `print` 输出。
+    public static func setLogger(_ logger: PayKitLogger?) {
+        LogUtil.setLogger(logger)
+    }
+
     /// 初始化配置（幂等：仅首次调用生效，除非调用 reset）
     public static func initialize(configuration: PayKitConfiguration) {
         lock.lock()

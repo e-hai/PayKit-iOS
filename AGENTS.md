@@ -110,6 +110,7 @@ DeviceCache  CustomerInfoHelper  BillingAbstract
 ## Public API（稳定面）
 
 ```swift
+PayKit.setLogger(_ logger: PayKitLogger?)
 PayKit.initialize(configuration: PayKitConfiguration)
 PayKit.reset(clearCache: Bool = true)
 
