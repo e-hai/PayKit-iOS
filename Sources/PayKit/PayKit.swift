@@ -13,18 +13,18 @@ public final class PayKit: @unchecked Sendable {
         lock.lock()
         defer { lock.unlock() }
         guard let inst = instance else {
-            fatalError("PayKit must be configured before accessing PayKit.shared. Call PayKit.configure(configuration:) first.")
+            fatalError("PayKit must be initialized before accessing PayKit.shared. Call PayKit.initialize(configuration:) first.")
         }
         return inst
     }
 
     /// 初始化配置（幂等：仅首次调用生效，除非调用 reset）
-    public static func configure(configuration: PayKitConfiguration) {
+    public static func initialize(configuration: PayKitConfiguration) {
         lock.lock()
         defer { lock.unlock() }
 
         if instance != nil {
-            LogUtil.w(LogUtil.tagGeneral, "PayKit is already configured. Ignoring configure call.")
+            LogUtil.w(LogUtil.tagGeneral, "PayKit is already initialized. Ignoring initialize call.")
             return
         }
 
@@ -34,7 +34,7 @@ public final class PayKit: @unchecked Sendable {
 
         let newInstance = PayKit(configuration: configuration)
         instance = newInstance
-        LogUtil.i(LogUtil.tagGeneral, "PayKit configured successfully.")
+        LogUtil.i(LogUtil.tagGeneral, "PayKit initialized successfully.")
 
         try? newInstance.billing.startConnection()
         Task {
@@ -50,6 +50,7 @@ public final class PayKit: @unchecked Sendable {
         lock.unlock()
 
         if let oldInstance = old {
+            oldInstance.billing.setAppAccountToken(nil)
             oldInstance.billing.endConnection()
             if clearCache {
                 oldInstance.deviceCache.clear()
@@ -278,13 +279,21 @@ public final class PayKit: @unchecked Sendable {
     /// 运行时替换验单器
     public func setPurchaseVerifier(_ verifier: PurchaseVerifier) {
         stateLock.lock()
-        defer { stateLock.unlock() }
         self.configuration = PayKitConfiguration(
             subsProductIds: configuration.subsProductIds,
             consumableProductIds: configuration.consumableProductIds,
             nonConsumableProductIds: configuration.nonConsumableProductIds,
             purchaseVerifier: verifier
         )
+        stateLock.unlock()
+        billing.updatePurchaseVerifier(verifier)
+    }
+
+    /// 设置绑定到 StoreKit 2 购买请求的用户 UUID（appAccountToken），用于 App Store Server Notifications V2 归属用户。
+    /// 必须在发起购买之前设置；传 nil 可清除。
+    public func setAppAccountToken(_ token: UUID?) {
+        billing.setAppAccountToken(token)
+        LogUtil.d(LogUtil.tagGeneral, "setAppAccountToken bound=\(token != nil)")
     }
 
     // MARK: - Private Helpers

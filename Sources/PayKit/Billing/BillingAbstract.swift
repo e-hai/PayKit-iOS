@@ -22,4 +22,10 @@ public protocol BillingAbstract: AnyObject, Sendable {
 
     /// 完成/确认交易（消耗品发货后调用或重试消单）
     func finishTransaction(purchaseToken: String) async throws
+
+    /// 设置绑定到 StoreKit 2 购买请求的用户 UUID（appAccountToken）
+    func setAppAccountToken(_ token: UUID?)
+
+    /// 运行时更新验单器
+    func updatePurchaseVerifier(_ verifier: PurchaseVerifier)
 }

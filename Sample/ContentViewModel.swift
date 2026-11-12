@@ -33,7 +33,7 @@ public final class ContentViewModel: ObservableObject {
             consumableProductIds: Constants.allConsumables,
             nonConsumableProductIds: Constants.allNonConsumables
         )
-        PayKit.configure(configuration: config)
+        PayKit.initialize(configuration: config)
 
         // 注册权益监听
         let listenerObj = ClosureCustomerInfoListener { [weak self] customerInfo in

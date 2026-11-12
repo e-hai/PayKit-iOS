@@ -60,10 +60,10 @@ PayKit-iOS/
 
 ## Release & Integration
 
-- **Tag**: `1.0.0` / `v1.0.0`
+- **Tag**: `1.1.0`
 - **SPM Dependency**:
   ```swift
-  .package(url: "https://github.com/e-hai/PayKit-iOS.git", from: "1.0.0")
+  .package(url: "https://github.com/e-hai/PayKit-iOS.git", from: "1.1.0")
   ```
 - **Target Dependency**:
   ```swift
@@ -101,7 +101,7 @@ DeviceCache  CustomerInfoHelper  BillingAbstract
 
 ### Core Data Flow
 
-1. **Init**：`PayKit.configure(configuration:)` → `billing.startConnection()` 监听 `Transaction.updates` → `syncPurchases()` 异步同步。
+1. **Init**：`PayKit.initialize(configuration:)` → `billing.startConnection()` 监听 `Transaction.updates` → `syncPurchases()` 异步同步。
 2. **Sync / 恢复**：`syncPurchases()` / `restorePurchases()` → 查 `Transaction.currentEntitlements` + 未完成交易 → 订阅/非消耗自动 finish 并确认；消耗品仅在履约账本记录时追踪 → 更新 `CustomerInfo`。
 3. **Query**：`getProducts(productIds)` 校验 ID 声明后调用 `Product.products(for:)`。
 4. **Purchase**：`purchase(...)` → `Product.purchase()` → 成功后消耗品先记账本 → `onCompleted`（宿主发货）→ finish 交易并清理账本；失败留账本重试。
@@ -110,7 +110,7 @@ DeviceCache  CustomerInfoHelper  BillingAbstract
 ## Public API（稳定面）
 
 ```swift
-PayKit.configure(configuration: PayKitConfiguration)
+PayKit.initialize(configuration: PayKitConfiguration)
 PayKit.reset(clearCache: Bool = true)
 
 PayKit.shared
@@ -132,6 +132,7 @@ func purchase(storeProduct: StoreProduct) async -> Result<StoreTransaction, PayK
 func setUpdatedCustomerInfoListener(_ listener: UpdatedCustomerInfoListener?)
 var customerInfoStream: AsyncStream<CustomerInfo> { get }
 func setPurchaseVerifier(_ verifier: PurchaseVerifier)
+func setAppAccountToken(_ token: UUID?)
 ```
 
 ## Important Notes for Agents

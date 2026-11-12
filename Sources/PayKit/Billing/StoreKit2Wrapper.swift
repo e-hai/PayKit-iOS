@@ -8,6 +8,9 @@ public final class StoreKit2Wrapper: BillingAbstract, @unchecked Sendable {
     private var updatesTask: Task<Void, Never>?
     private let syncQueue = DispatchQueue(label: "com.kit.pay.billing.syncQueue")
 
+    private var purchaseVerifier: PurchaseVerifier
+    private var appAccountToken: UUID?
+
     /// 进行中的单笔购买回调（防止重复发起）
     private var activePurchaseCallback: PurchaseCallback?
 
@@ -16,7 +19,28 @@ public final class StoreKit2Wrapper: BillingAbstract, @unchecked Sendable {
 
     public init(configuration: PayKitConfiguration, consumableLedger: ConsumableLedger) {
         self.configuration = configuration
+        self.purchaseVerifier = configuration.purchaseVerifier
         self.consumableLedger = consumableLedger
+    }
+
+    public func setAppAccountToken(_ token: UUID?) {
+        syncQueue.sync {
+            self.appAccountToken = token
+        }
+    }
+
+    public func updatePurchaseVerifier(_ verifier: PurchaseVerifier) {
+        syncQueue.sync {
+            self.purchaseVerifier = verifier
+        }
+    }
+
+    private func currentVerifier() -> PurchaseVerifier {
+        syncQueue.sync { purchaseVerifier }
+    }
+
+    private func currentAppAccountToken() -> UUID? {
+        syncQueue.sync { appAccountToken }
     }
 
     deinit {
@@ -115,20 +139,8 @@ public final class StoreKit2Wrapper: BillingAbstract, @unchecked Sendable {
         var subsList: [StoreTransaction] = []
         var inappList: [StoreTransaction] = []
 
-        // 1. 查询当前有效权益 (Current Entitlements)
-        for await verification in Transaction.currentEntitlements {
-            guard case .verified(let transaction) = verification else {
-                continue
-            }
-            let txn = makeStoreTransaction(from: transaction, rawJWS: verification.jwsRepresentation)
-            if configuration.subsProductIds.contains(transaction.productID) {
-                subsList.append(txn)
-            } else {
-                inappList.append(txn)
-            }
-        }
-
-        // 2. 查询未完成的交易（包含待履约或挂起的消耗品）
+        // 1. 先检查未完成的非消耗品/订阅交易，严格过 PurchaseVerifier 后才 finish
+        let verifier = currentVerifier()
         for await verification in Transaction.unfinished {
             guard case .verified(let transaction) = verification else {
                 continue
@@ -138,6 +150,29 @@ public final class StoreKit2Wrapper: BillingAbstract, @unchecked Sendable {
                 if !inappList.contains(where: { $0.purchaseToken == txn.purchaseToken }) {
                     inappList.append(txn)
                 }
+            } else {
+                let txn = makeStoreTransaction(from: transaction, rawJWS: verification.jwsRepresentation)
+                switch await verifier.verify(transaction: txn) {
+                case .success:
+                    await transaction.finish()
+                    LogUtil.d(LogUtil.tagBilling, "queryPurchases unfinished verified and finished id=\(transaction.id)")
+                case .failure(let error):
+                    LogUtil.e(LogUtil.tagBilling, "queryPurchases unfinished verify failed id=\(transaction.id)", error: error)
+                    throw error
+                }
+            }
+        }
+
+        // 2. 查询当前有效权益 (Current Entitlements)
+        for await verification in Transaction.currentEntitlements {
+            guard case .verified(let transaction) = verification else {
+                continue
+            }
+            let txn = makeStoreTransaction(from: transaction, rawJWS: verification.jwsRepresentation)
+            if configuration.subsProductIds.contains(transaction.productID) {
+                subsList.append(txn)
+            } else {
+                inappList.append(txn)
             }
         }
 
@@ -226,7 +261,11 @@ public final class StoreKit2Wrapper: BillingAbstract, @unchecked Sendable {
 
         // 调用购买
         do {
-            let purchaseResult = try await targetProduct.purchase()
+            var options: Set<Product.PurchaseOption> = []
+            if let token = currentAppAccountToken() {
+                options.insert(.appAccountToken(token))
+            }
+            let purchaseResult = try await targetProduct.purchase(options: options)
             switch purchaseResult {
             case .success(let verificationResult):
                 await handlePurchaseSuccess(verificationResult, callback: currentCallback)
@@ -288,7 +327,7 @@ public final class StoreKit2Wrapper: BillingAbstract, @unchecked Sendable {
                 consumableLedger.recordPendingFulfill(purchaseToken: txn.purchaseToken, productId: transaction.productID)
 
                 // 2. 验签扩展（若配置了服务端验单）
-                let verifyResult = await configuration.purchaseVerifier.verify(transaction: txn)
+                let verifyResult = await currentVerifier().verify(transaction: txn)
                 switch verifyResult {
                 case .success:
                     // 3. 通知宿主发货
@@ -309,7 +348,7 @@ public final class StoreKit2Wrapper: BillingAbstract, @unchecked Sendable {
 
             } else {
                 // 订阅或非消耗品
-                let verifyResult = await configuration.purchaseVerifier.verify(transaction: txn)
+                let verifyResult = await currentVerifier().verify(transaction: txn)
                 switch verifyResult {
                 case .success:
                     await transaction.finish()
@@ -331,9 +370,16 @@ public final class StoreKit2Wrapper: BillingAbstract, @unchecked Sendable {
         let txn = makeStoreTransaction(from: transaction, rawJWS: verificationResult.jwsRepresentation)
         LogUtil.i(LogUtil.tagBilling, "incoming transaction update id=\(transaction.id) product=\(transaction.productID)")
 
-        // 如果是订阅或非消耗品，自动 finish
+        // 如果是订阅或非消耗品，必须严格通过 PurchaseVerifier 后才 finish
         if !configuration.consumableProductIds.contains(transaction.productID) {
-            await transaction.finish()
+            let verifyResult = await currentVerifier().verify(transaction: txn)
+            switch verifyResult {
+            case .success:
+                await transaction.finish()
+            case .failure(let error):
+                LogUtil.e(LogUtil.tagBilling, "incoming transaction verify failed id=\(transaction.id)", error: error)
+                return
+            }
         }
 
         onExternalPurchaseUpdated?(txn)

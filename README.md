@@ -1,6 +1,6 @@
 # PayKit-iOS
 
-[![Release](https://img.shields.io/badge/Release-1.0.0-blue.svg)](https://github.com/e-hai/PayKit-iOS/releases/tag/1.0.0)
+[![Release](https://img.shields.io/badge/Release-1.1.0-blue.svg)](https://github.com/e-hai/PayKit-iOS/releases/tag/1.1.0)
 [![SPM](https://img.shields.io/badge/SPM-compatible-orange.svg)](https://swift.org/package-manager/)
 [![Platform](https://img.shields.io/badge/Platform-iOS%2015%2B%20%7C%20macOS%2012%2B%20%7C%20visionOS%201%2B-lightgrey.svg)](https://developer.apple.com/documentation/storekit)
 [![Swift](https://img.shields.io/badge/Swift-5.9%2B%20%7C%206.0-red.svg)](https://swift.org)
@@ -117,7 +117,7 @@ sequenceDiagram
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/e-hai/PayKit-iOS.git", from: "1.0.0")
+    .package(url: "https://github.com/e-hai/PayKit-iOS.git", from: "1.1.0")
 ],
 targets: [
     .target(
@@ -167,7 +167,7 @@ struct PayKitSampleApp: App {
         )
 
         // 初始化配置并开始监听后台交易
-        PayKit.configure(configuration: configuration)
+        PayKit.initialize(configuration: configuration)
 
         // 注册全局权益变化监听（可选）
         PayKit.shared.setUpdatedCustomerInfoListener(ClosureCustomerInfoListener { customerInfo in
@@ -330,13 +330,17 @@ Task {
 
 ---
 
-### 7. 自定义服务端验单（可选）
+### 7. 服务端协同与通知归属（可选）
 
-默认使用纯本地 StoreKit 2 JWS 校验。如需在发货前将收据提交至自有后端：
+默认使用纯本地 StoreKit 2 JWS 校验。如需对接自有后端与 App Store Server Notifications V2：
+
+1. **严格验单闸门（需服务端幂等）**：主动购买、`Transaction.updates` 后台交易流与启动同步中所有未 `finish` 的非消耗品/订阅交易均会**先经过 `PurchaseVerifier` 验单**；验单失败（含断网）时**不会调用 `transaction.finish()`**，交易保留在 StoreKit `unfinished` 队列并在下次启动/更新时重试（服务端需以 `transactionId` / `purchaseToken` 做幂等）。
+2. **绑定用户账号（`appAccountToken`）**：在用户登录后、发起购买之前调用 `setAppAccountToken(uuid)`。即使支付过程中 App 被杀，Apple 推送的 Server Notifications V2 交易数据也会携带该 UUID 以便服务端归属用户。
 
 ```swift
+// 1. 注册自定义服务端验单器
 let customVerifier = PurchaseVerifier { txn in
-    // 将 txn.purchaseToken / txn.signature / txn.originalJson 发送给您的后端验单
+    // 将 txn.purchaseToken / txn.signature (JWS) / txn.originalJson 发送给您的后端验单
     let ok = await myBackendService.verifyAppleJws(
         token: txn.purchaseToken,
         signature: txn.signature,
@@ -348,6 +352,9 @@ let customVerifier = PurchaseVerifier { txn in
 }
 
 PayKit.shared.setPurchaseVerifier(customVerifier)
+
+// 2. 用户登录后绑定 UUID（退出登录传 nil 清除）
+PayKit.shared.setAppAccountToken(currentUserUuid)
 ```
 
 ---
